@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junior IT Business Analyst Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section id="landing" class="hero-card">
+      <div class="brand-header">
+        <img src="assets/kemnaker-logo.png" alt="Logo Kemnaker" class="brand-logo kemnaker-img">
+        <img src="assets/rekind-logo.jpg" alt="Logo Rekind" class="brand-logo rekind-img">
+      </div>
+      <div class="eyebrow">RECRUITMENT ASSESSMENT</div>
+      <h1>Junior IT Business Analyst</h1>
+      <p class="lead">
+        Assessment ini mengukur kemampuan implementasi sistem, problem solving,
+        komunikasi, requirement analysis, dan penggunaan AI secara tepat.
+      </p>
+
+      <div class="info-grid">
+        <div><strong>12</strong><span>Pertanyaan</span></div>
+        <div><strong>4</strong><span>Kompetensi</span></div>
+        <div><strong>±30</strong><span>Menit</span></div>
+      </div>
+
+      <div class="form-group">
+        <label for="candidateName">Nama Lengkap</label>
+        <input id="candidateName" type="text" placeholder="Masukkan nama lengkap sesuai list" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="candidateEmail">Email Kandidat</label>
+        <input id="candidateEmail" type="email" placeholder="Masukkan email sesuai list" autocomplete="email">
+      </div>
+
+      <div id="draftNotice" class="draft-notice hidden">
+        💡 Draf jawaban Anda sebelumnya ditemukan dan telah dipulihkan secara otomatis.
+      </div>
+
+      <div id="verifyMessage" class="error-msg hidden"></div>
+
+      <button class="primary" id="startBtn">Mulai Assessment</button>
+    </section>
+
+    <section id="assessment" class="hidden">
+      <div class="topbar">
+        <div class="topbar-brand-group">
+          <div class="topbar-logos">
+            <img src="assets/kemnaker-logo.png" alt="Kemnaker" class="topbar-logo kemnaker-topbar-img">
+            <img src="assets/rekind-logo.jpg" alt="Rekind" class="topbar-logo rekind-topbar-img">
+          </div>
+          <div>
+            <div class="eyebrow">JUNIOR IT BUSINESS ANALYST</div>
+            <div class="candidate-line">Kandidat: <strong id="candidateDisplay"></strong> (<span id="emailDisplay"></span>)</div>
+          </div>
+        </div>
+        <div class="progress-box">
+          <span id="progressLabel">0/12 terjawab</span>
+          <div class="progress-track">
+            <div id="progressBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="questions"></div>
+
+      <div class="submit-card">
+        <button class="primary" id="submitBtn">Kirim Jawaban</button>
+        <p>Pastikan seluruh jawaban sudah terisi sebelum dikirim. Draf Anda tersimpan otomatis secara berkala.</p>
+      </div>
+    </section>
+
+    <section id="success" class="success-card hidden">
+      <div class="success-icon">✓</div>
+      <h2>Assessment berhasil dikirim</h2>
+      <p>Terima kasih. Jawaban Anda sudah tercatat dan akan direview oleh interviewer.</p>
+    </section>
+  </main>
+
+  <div id="confirmModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>Konfirmasi Pengiriman</h3>
+      <p>Apakah Anda yakin ingin mengirim seluruh jawaban assessment ini?</p>
+      <div class="modal-info">
+        Total Soal Terjawab: <strong id="modalAnsweredCount">12/12</strong>
+      </div>
+      <p class="modal-warning">⚠️ Jawaban yang sudah dikirim tidak dapat diubah kembali.</p>
+      <div class="modal-actions">
+        <button id="cancelSubmitBtn" class="secondary">Periksa Kembali</button>
+        <button id="confirmSubmitBtn" class="primary">Ya, Kirim Sekarang</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
