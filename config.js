@@ -3,3 +3,10 @@
 // const API_URL = "https://script.google.com/macros/s/AKfycbxxxx/exec";
 
 const API_URL = "https://script.google.com/macros/s/AKfycbwGZM55a11tqcbaE7dPiPEtRmNa4tGEmfT63V2ITa52DoaIFyQ8L9-gNAQoZArptNUqvg/exec";
+
+// Konfigurasi Jam Penutupan Assessment (Default: 15:30 WIB)
+const CLOSING_HOUR = 15;
+const CLOSING_MINUTE = 30;
+
+
+
