@@ -166,7 +166,7 @@ startBtn.addEventListener("click", async () => {
   verifyMessage.textContent = "";
 
   if (!name || !email) {
-    showError("Silakan isi nama lengkap dan email terlebih dahulu.");
+    showError("Silakan isi nama lengkap dan email yang terdaftar di Maganghub terlebih dahulu.");
     return;
   }
 
