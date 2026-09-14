@@ -89,6 +89,7 @@ const questions = [
 const landing = document.getElementById("landing");
 const assessment = document.getElementById("assessment");
 const success = document.getElementById("success");
+const closed = document.getElementById("closed");
 const candidateName = document.getElementById("candidateName");
 const candidateEmail = document.getElementById("candidateEmail");
 const candidateDisplay = document.getElementById("candidateDisplay");
@@ -100,6 +101,8 @@ const questionsEl = document.getElementById("questions");
 const progressLabel = document.getElementById("progressLabel");
 const progressBar = document.getElementById("progressBar");
 const submitBtn = document.getElementById("submitBtn");
+const countdownLanding = document.getElementById("countdownLanding");
+const countdownTopbar = document.getElementById("countdownTopbar");
 
 const confirmModal = document.getElementById("confirmModal");
 const modalAnsweredCount = document.getElementById("modalAnsweredCount");
@@ -110,8 +113,53 @@ const STORAGE_KEY_NAME = "tb_assessment_name";
 const STORAGE_KEY_EMAIL = "tb_assessment_email";
 const STORAGE_KEY_DRAFT_PREFIX = "tb_assessment_draft_";
 
-// Check draft on load
+function getClosingTargetTime() {
+  const targetHour = typeof CLOSING_HOUR !== "undefined" ? CLOSING_HOUR : 15;
+  const targetMin = typeof CLOSING_MINUTE !== "undefined" ? CLOSING_MINUTE : 30;
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), targetHour, targetMin, 0, 0);
+}
+
+function checkClosingStatus() {
+  const now = new Date();
+  const target = getClosingTargetTime();
+
+  if (now >= target) {
+    showClosedScreen();
+    return true;
+  }
+
+  const diffMs = target - now;
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const pad = num => String(num).padStart(2, '0');
+  const formattedTime = hours > 0 ? `${hours}j ${minutes}m ${seconds}d` : `${minutes}m ${seconds}d`;
+  const formattedClock = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+
+  if (countdownLanding) countdownLanding.textContent = `Sisa waktu: ${formattedTime}`;
+  if (countdownTopbar) countdownTopbar.textContent = formattedClock;
+
+  return false;
+}
+
+function showClosedScreen() {
+  if (landing) landing.classList.add("hidden");
+  if (assessment) assessment.classList.add("hidden");
+  if (confirmModal) confirmModal.classList.add("hidden");
+  if (closed) closed.classList.remove("hidden");
+  if (startBtn) startBtn.disabled = true;
+  if (submitBtn) submitBtn.disabled = true;
+}
+
+// Check draft & closing status on load
 document.addEventListener("DOMContentLoaded", () => {
+  if (checkClosingStatus()) return;
+
+  setInterval(checkClosingStatus, 1000);
+
   const savedName = localStorage.getItem(STORAGE_KEY_NAME);
   const savedEmail = localStorage.getItem(STORAGE_KEY_EMAIL);
 
@@ -124,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
 
 function getDraftStorageKey(email) {
   return STORAGE_KEY_DRAFT_PREFIX + email.trim().toLowerCase();
@@ -159,8 +208,11 @@ function clearDraft() {
 }
 
 startBtn.addEventListener("click", async () => {
+  if (checkClosingStatus()) return;
+
   const name = candidateName.value.trim();
   const email = candidateEmail.value.trim();
+
 
   verifyMessage.classList.add("hidden");
   verifyMessage.textContent = "";
@@ -309,6 +361,8 @@ function updateProgress() {
 
 // Show confirm modal on submit click
 submitBtn.addEventListener("click", () => {
+  if (checkClosingStatus()) return;
+
   const answers = collectAnswers();
   const missing = Object.entries(answers).filter(([_, v]) => !v).map(([k]) => k);
 
@@ -332,8 +386,11 @@ cancelSubmitBtn.addEventListener("click", () => {
 });
 
 confirmSubmitBtn.addEventListener("click", async () => {
+  if (checkClosingStatus()) return;
+
   confirmModal.classList.add("hidden");
   submitBtn.disabled = true;
+
   submitBtn.textContent = "Mengirim...";
 
   const answers = collectAnswers();
